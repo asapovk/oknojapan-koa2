@@ -22,17 +22,21 @@ const userSchema = new mongoose.Schema({
     ]
   },
 
-  isConfirmed: {
-    type: Boolean,
-    required: true
-  },
-
-  token: {
+  group: {
     type: String,
     required: true
   },
 
-  deleted: Boolean,
+  isVerified: {
+    type: Boolean,
+    required: true
+  },
+
+  verifyEmailToken: {
+    type: String,
+    required: true
+  },
+
   passwordHash:  {
     type: String,
     required: true

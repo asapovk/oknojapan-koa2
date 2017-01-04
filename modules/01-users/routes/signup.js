@@ -1,34 +1,29 @@
 const passport = require('koa-passport');
+const User = require('../models/user');
+
 
 exports.post = async function(ctx, next) {
-  // запускает стратегию, станадартные опции что делать с результатом
-  // опции @https://github.com/jaredhanson/passport/blob/master/lib/middleware/authenticate.js
-  // можно передать и функцию
-  return passport.authenticate('local.signup', {
-    successRedirect: '/',
-    failureRedirect: '/registration',
-    //failureMessage: true // запишет сообщение об ошибке в session.messages[]
-    failureFlash: true // req.flash, better
+  const verifyEmailToken = Math.random().toString(36).slice(2, 10);
+    let user = new User({
+      displayName: ctx.request.body.displayName,
+      email: ctx.request.body.email.toLowerCase(),
+      passwordHash: ctx.request.body.password,
+      isVerified: false,
+      verifyEmailToken: verifyEmailToken,
+      group: 'free',
+      salt: '123'
+    });
 
-    // assignProperty: 'something' присвоить юзера в свойство req.something
-    //   - нужно для привязывания акков соц. сетей
-    // если не стоит, то залогинит его вызовом req.login(user),
-    //   - это поместит user.id в session.passport.user (если не стоит опция session:false)
-    //   - также присвоит его в req.user
-  })(ctx, next);
+  try {
+  await user.save();
+  } catch (err) {
+    if(err.name === 'MongoError' && err.code === 11000){
+        ctx.flash(error,'Имя пользователя или email уже занято');
+    }
+    ctx.redirect('/signup');
+  }
+
+  ctx.body = 'You are registerd successfully';
+
+
 };
-
-
-/* FOR AJAX:
-router.post('/login/local', async function(ctx, next) {
-  const ctx = ctx; // wrapper for the context
-
-  // @see node_modules/koa-passport/lib/framework/koa.js for passport.authenticate
-  // it returns the middleware to delegate
-  const middleware = passport.authenticate('local', async function(err, user, info) {
-    // ...
-  });
-
-  await middleware.call(ctx, next);
-
-});*/

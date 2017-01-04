@@ -1,0 +1,15 @@
+extends ../../../templates/layout
+
+block content
+  include ../../../templates/header.pug
+  hr.horizontal
+  ul.courses-list
+    each course in courses
+      li.courses-list__item.panel.panel-default
+        h1.courses-list__item-title #{course.title}
+        .courses-list__item-content
+          img.courses-list__item-image(src=course.imagePath)
+          .courses-list__item-description #{course.description}
+        .courses-list__item-buy
+          p.courses-list__item-buy-price Price: #{course.price} $
+          button.courses-list__item-buy-button Buy now

@@ -1,5 +1,3 @@
-exports.get = async function(ctx, next) {
-
-    ctx.body = ctx.render('templates/homepage');
-
-};
+exports.get = ctx => {
+  ctx.body = ctx.render('templates/homepage');
+}

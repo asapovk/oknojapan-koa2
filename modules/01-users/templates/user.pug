@@ -1,0 +1,8 @@
+- var authUser_displayName = authUser === undefined ? null : authUser.displayName;
+case authUser_displayName
+  when null
+    p You are not authenticated
+    p This page owner is #{usr.displayName}
+  default 
+    p You are logged in as #{authUser_displayName}
+    p This page owner is #{usr.displayName}

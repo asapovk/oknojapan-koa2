@@ -5,7 +5,6 @@ require('./serialize');
 
 require('./localStrategy');
 
-require('./signupStrategy');
 
 
 module.exports = passport;

@@ -34,7 +34,7 @@ exports.init = app => app.use(async (ctx, next) => {
       localsFull[key] = locals[key];
     }
 /////////////// I AM HERE NOW!
-  
+
 
     const templatePathResolved = path.join(config.template.root, templatePath + '.pug');
 
