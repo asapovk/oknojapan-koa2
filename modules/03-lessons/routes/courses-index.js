@@ -1,6 +1,20 @@
 var Course = require('../models/course');
-
 exports.get = async ctx => {
-  var courses = await Course.find();
-  ctx.body = ctx.render('modules/03-lessons/templates/courses-index', {courses: courses});
+  try {
+    var coursesType = ctx.request.query.courses;
+  } catch (e) {}
+  if (coursesType == undefined) {
+       ctx.redirect('/courses?courses=all');
+  }
+  var courses = [];
+  if (coursesType === 'all') {
+    courses = await Course.find();
+    console.log(coursesType);
+  }
+  else {
+    courses = await Course.find({type: coursesType});
+  }
+
+
+  ctx.body = ctx.render('modules/03-lessons/templates/courses-index', {courses: courses, cart: ctx.session.cart});
 }

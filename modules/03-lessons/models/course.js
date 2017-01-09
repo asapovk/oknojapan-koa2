@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var User = require('../../01-users/models/user');
 
 
 const courseSchema = new mongoose.Schema({
@@ -32,7 +34,8 @@ const courseSchema = new mongoose.Schema({
   lessons:  {
     type: String,
     required: true
-  }
+  },
+  students: [ {type: Schema.Types.ObjectId, ref: User} ]
 });
 
 

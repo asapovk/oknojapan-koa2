@@ -1,0 +1,29 @@
+extends ../../../templates/layout
+
+block content
+  include ../../../templates/header.pug
+  ul.courses-menu
+    li.courses-menu__item
+      a(href ="/courses?courses=all") All
+    li.courses-menu__item
+      a(href ="/courses?courses=general") General
+    li.courses-menu__item
+      a(href ="/courses?courses=additional") Additional
+    li.courses-menu__item
+      a(href ="/courses?courses=started") Started
+    li.courses-menu__item
+      a(href ="/courses?courses=completed") Completed
+    li.courses-menu__item
+      a(href ="/courses?courses=new") New
+    li.courses-menu__item Cart
+      a(href="/checkout")
+  hr.courses-horizontal
+  ul.courses-list
+    each course in courses
+      li.courses-list__item.panel.panel-default
+        h1.courses-list__item-title #{course.title}
+        .courses-list__item-content
+          img.courses-list__item-image(src=course.imagePath)
+          .courses-list__item-description #{course.description}
+  a.courses-empty-cart(href = "/courses-empty") Empty cart
+  script(src="jss/buyy.js?version=2")

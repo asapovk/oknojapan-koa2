@@ -2,7 +2,24 @@ extends ../../../templates/layout
 
 block content
   include ../../../templates/header.pug
-  hr.horizontal
+  ul.courses-menu
+    li.courses-menu__item
+      a(href ="/courses?courses=all") All
+    li.courses-menu__item
+      a(href ="/courses?courses=general") General
+    li.courses-menu__item
+      a(href ="/courses?courses=additional") Additional
+    li.courses-menu__item
+      a(href ="/courses?courses=started") Started
+    li.courses-menu__item
+      a(href ="/courses?courses=completed") Completed
+    li.courses-menu__item
+      a(href ="/courses?courses=new") New
+    li.courses-menu__item
+      a(href ="/checkout") Cart &nbsp
+      if cart.items
+        span.badge.courses-menu__item-cart-badge #{cart.totalQty}
+  hr.courses-horizontal
   ul.courses-list
     each course in courses
       li.courses-list__item.panel.panel-default
@@ -11,5 +28,28 @@ block content
           img.courses-list__item-image(src=course.imagePath)
           .courses-list__item-description #{course.description}
         .courses-list__item-buy
-          p.courses-list__item-buy-price Price: #{course.price} $
-          button.courses-list__item-buy-button Buy now
+          if course.type === 'general'
+            p.courses-list__item-buy-price Price: #{course.price} $ a month
+            if cart.items
+              if cart.items.hasOwnProperty(course._id)
+                button.courses-list__item-buy-remove(id =course._id) Remove
+                button.courses-list__item-buy-button(id = course._id style="display:none") Subscrib]e
+              else
+                button.courses-list__item-buy-remove(id =course._id style="display:none") Remove
+                button.courses-list__item-buy-button(id = course._id) Subscrib]e
+            else
+              button.courses-list__item-buy-remove(id =course._id style="display:none") Remove
+              button.courses-list__item-buy-button(id = course._id) Subscrib]e
+          else
+            p.courses-list__item-buy-price Price: #{course.price} $
+            if cart.items
+              if cart.items.hasOwnProperty(course._id)
+                button.courses-list__item-buy-remove(id =course._id ) Remove
+                button.courses-list__item-buy-button(id = course._id style="display:none") Buy now
+              else
+                button.courses-list__item-buy-remove(id =course._id style="display:none") Remove
+                button.courses-list__item-buy-button(id = course._id) Buy now
+            else
+              button.courses-list__item-buy-remove(id =course._id style="display:none") Remove
+              button.courses-list__item-buy-button(id = course._id) Buy now
+  script(src="jss/buyy.js?version=2")
