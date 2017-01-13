@@ -14,7 +14,7 @@ exports.get = async ctx => {
   else {
     courses = await Course.find({type: coursesType});
   }
-
+   console.log(ctx.session.cart);
 
   ctx.body = ctx.render('modules/03-lessons/templates/courses-index', {courses: courses, cart: ctx.session.cart});
 }

@@ -2,35 +2,62 @@ extends ../../../templates/layout
 
 block content
   include ../../../templates/header.pug
+  link(rel='stylesheet' href='css/courses-index.css?version=4')
+  h1.courses-header Курсы японского языка
+  p.courses-text.
+      Здесь находятся «правильные» курсы по японскому языку,
+      цель которых — научить думать на японском, писать правильно, читать быстро и говорить красиво.
+  .courses-features
+    h2.courses-features__title Особенности курсов
+    ul.courses-features__features
+      li.courses-features__feature.courses-features__feature_quality
+        h3.courses-features__feature-title Качество
+        p.courses-features__feature-text Это самое главное. Мы изучаем разработку на профессиональном уровне
+      li.courses-features__feature.courses-features__feature_online
+        h3.courses-features__feature-title Дистанционность
+        p.courses-features__feature-text На практике это оказывается удобнее, чем очные курсы
+      li.courses-features__feature.courses-features__feature_support
+        h3.courses-features__feature-title Поддержка
+        p.courses-features__feature-text Вы получите советы по развитию именно для вас
+      li.courses-features__feature.courses-features__feature_result
+        h3.courses-features__feature-title Результат
+        p.courses-features__feature-text Цель курсов - получить конкретные результаты в плане знаний и умений
+      li.courses-features__feature.courses-features__feature_guarantees
+        h3.courses-features__feature-title Гарантии
+        p.courses-features__feature-text Возврат денег, если что-то не так
+
+  h2.courses-minor-header Список курсов
+
   ul.courses-menu
     li.courses-menu__item
-      a(href ="/courses?courses=all") All
+      a(href ="/courses?courses=all") Все
     li.courses-menu__item
-      a(href ="/courses?courses=general") General
+      a(href ="/courses?courses=general") Основные
     li.courses-menu__item
-      a(href ="/courses?courses=additional") Additional
+      a(href ="/courses?courses=additional") Дополнительные
     li.courses-menu__item
-      a(href ="/courses?courses=started") Started
+      a(href ="/courses?courses=started") Мои курсы
     li.courses-menu__item
-      a(href ="/courses?courses=completed") Completed
+      a(href ="/courses?courses=completed") Пройденные
     li.courses-menu__item
-      a(href ="/courses?courses=new") New
-    li.courses-menu__item
-      a(href ="/checkout") Cart &nbsp
-      if cart.items
-        span.badge.courses-menu__item-cart-badge #{cart.totalQty}
+      a(href ="/courses?courses=new") Новые
+    if cart && cart.items && cart.totalQty > 0
+      div.courses-cart
+        a(href ="/checkout") Cart &nbsp
+          span.badge.courses-cart__badge #{cart.totalQty}
   hr.courses-horizontal
   ul.courses-list
     each course in courses
       li.courses-list__item.panel.panel-default
-        h1.courses-list__item-title #{course.title}
+        a(href = "/courses/"+course._id)
+          h1.courses-list__item-title #{course.title}
         .courses-list__item-content
           img.courses-list__item-image(src=course.imagePath)
           .courses-list__item-description #{course.description}
         .courses-list__item-buy
           if course.type === 'general'
             p.courses-list__item-buy-price Price: #{course.price} $ a month
-            if cart.items
+            if cart && cart.items && cart.totalQty > 0
               if cart.items.hasOwnProperty(course._id)
                 button.courses-list__item-buy-remove(id =course._id) Remove
                 button.courses-list__item-buy-button(id = course._id style="display:none") Subscrib]e
@@ -42,7 +69,7 @@ block content
               button.courses-list__item-buy-button(id = course._id) Subscrib]e
           else
             p.courses-list__item-buy-price Price: #{course.price} $
-            if cart.items
+            if cart && cart.items && cart.totalQty > 0
               if cart.items.hasOwnProperty(course._id)
                 button.courses-list__item-buy-remove(id =course._id ) Remove
                 button.courses-list__item-buy-button(id = course._id style="display:none") Buy now
@@ -52,4 +79,12 @@ block content
             else
               button.courses-list__item-buy-remove(id =course._id style="display:none") Remove
               button.courses-list__item-buy-button(id = course._id) Buy now
-  script(src="jss/buyy.js?version=2")
+
+  h2.courses-minor-header Наши преподаватели
+  ul.courses-teachers
+    li.courses-teachers__teacher
+      .courses-teachers__teacher-info
+        img.courses-teachers__teacher-info-photo
+        h4.courses-teachers__teacher-info-name Елизавета Астапова
+      p.courses-teachers__teacher-description Это наш лучший и единственный пока преподаватель.
+  script(src="js/courses-buy.js?version=2")

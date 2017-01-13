@@ -1,10 +1,24 @@
 (function () {
 
+  function createCartElement() {
+    $('.courses-menu').append('<div class="courses-cart"><a href="/checkout">Cart <span class="badge courses-cart__badge">1</span></a></div>');
+  }
+
+  function updateCartElement(numberOfItems) {
+    var cartBadge = document.getElementsByClassName('courses-cart__badge')[0];
+    cartBadge.innerHTML = numberOfItems;
+  }
+
+  function deleteCartElement() {
+    $(".courses-cart").remove();
+    console.log('works');
+  }
+
 
   $('.courses-list__item-buy-button').on('click', function () {
 
       var buyButton = $(this);
-      var cartBadge = $('.courses-menu__item-cart-badge');
+      var cartBadge = $('.courses-cart__badge');
       var removeButton = buyButton.siblings('.courses-list__item-buy-remove');
       var xhr = new XMLHttpRequest();
       var courseId = $(this).attr("id");
@@ -14,9 +28,18 @@
       console.log(JSON.stringify({courseId: courseId}));
 
       xhr.onload = function () {
-        buyButton.hide();
-        removeButton.show();
+        if(xhr.status === 200) {
+          var itemsInCart = xhr.responseText;
+          switch (itemsInCart) {
+            case '1': createCartElement();
+              break;
+            default: updateCartElement(itemsInCart);
 
+          }
+          buyButton.hide();
+          removeButton.show();
+        }
+        console.log(xhr.responseText);
       };
   });
 
@@ -34,9 +57,18 @@
       console.log(JSON.stringify({courseId: courseId}));
 
       xhr.onload = function () {
-        removeButton.hide();
-        buyButton.show();
-        
+        if(xhr.status === 200) {
+          var itemsInCart = xhr.responseText;
+          switch (itemsInCart) {
+            case '0': deleteCartElement();
+              break;
+            default: updateCartElement(itemsInCart);
+
+          }
+          removeButton.hide();
+          buyButton.show();
+        }
+        console.log(xhr.responseText);
 
       };
   });

@@ -1,0 +1,25 @@
+extends ../../../templates/layout
+
+block content
+  include ../../../templates/header.pug
+  link(rel='stylesheet' href='/css/courses-index.css?version=5')
+  ul.courses-menu
+    li.courses-menu__item
+      a(href ="/courses?courses=all") All
+    li.courses-menu__item
+      a(href ="/courses?courses=general") General
+    li.courses-menu__item
+      a(href ="/courses?courses=additional") Additional
+    li.courses-menu__item
+      a(href ="/courses?courses=started") Started
+    li.courses-menu__item
+      a(href ="/courses?courses=completed") Completed
+    li.courses-menu__item
+      a(href ="/courses?courses=new") New
+    if cart && cart.items && cart.totalQty > 0
+      div.courses-cart
+        a(href ="/checkout") Cart &nbsp
+          span.badge.courses-cart__badge #{cart.totalQty}
+  hr.courses-horizontal
+  p #{course.description}
+  script(src="/js/courses-buy.js?version=3")
