@@ -1,4 +1,6 @@
 var Course = require('../models/course');
+//var reactServerCommentBox = require('../../04-comments');
+
 exports.get = async ctx => {
   try {
     var coursesType = ctx.request.query.courses;
